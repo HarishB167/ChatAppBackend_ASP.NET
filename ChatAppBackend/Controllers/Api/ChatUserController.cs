@@ -25,5 +25,13 @@ namespace ChatAppBackend.Controllers.Api
                 .Select(Mapper.Map<User, UserDto>);
             return Ok(data);
         }
+
+        public IHttpActionResult GetUser(int id)
+        {
+            var user = _context.ChatUsers.SingleOrDefault(c => c.Id == id);
+            if (user == null)
+                return NotFound();
+            return Ok(Mapper.Map<User, UserDto>(user));
+        }
     }
 }

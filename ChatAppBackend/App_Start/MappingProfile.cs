@@ -15,6 +15,10 @@ namespace ChatAppBackend.App_Start
             Mapper.CreateMap<User, UserDto>();
             Mapper.CreateMap<UserDto, User>()
                 .ForMember(c => c.Id, opt => opt.Ignore());
+
+            Mapper.CreateMap<Message, MessageDto>();
+            Mapper.CreateMap<MessageDto, Message>()
+                .ForMember(c => c.Id, opt => opt.Ignore());
         }
     }
 }
