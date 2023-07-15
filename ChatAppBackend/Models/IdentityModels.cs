@@ -20,6 +20,9 @@ namespace ChatAppBackend.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<User> ChatUsers { get; set; }
+        public DbSet<Message> Messages { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
