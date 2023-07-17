@@ -19,5 +19,12 @@ namespace ChatAppBackend.Models
 
         public DateTime DateTime { get; set; }
         public string Status { get; set; }
+
+        public override string ToString()
+        {
+            return "Id: " + Id + ", ReceiverId: " + ReceiverId
+                + ", SenderId: " + SenderId + ", DateTime: " + this.DateTime
+                + ", Status: " + Status + ", Content: " + Content;
+        }
     }
 }

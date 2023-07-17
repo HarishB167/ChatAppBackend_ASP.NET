@@ -71,8 +71,58 @@ namespace ChatAppBackend.Controllers.Api
         [Route("Api/Messages/SummaryForUser/{id}")]
         public IHttpActionResult GetDiscussionsSummaryForUserId(int id)
         {
-            // TODO
-            return Ok("User Id : " + id);
+            var chatsForUser = _context.Messages.Where(c => c.SenderId == id || c.ReceiverId == id);
+
+            var discussions = new Dictionary<int, Message>();
+
+            foreach (var chat in chatsForUser)
+            {
+                var otherPersonId = chat.SenderId == id ? chat.ReceiverId.Value : chat.SenderId.Value;
+                if (!discussions.ContainsKey(otherPersonId))
+                    discussions.Add(otherPersonId, chat);
+                else if (DateTime.Compare(discussions[otherPersonId].DateTime, chat.DateTime) < 0)
+                    discussions[otherPersonId] = chat;
+            }
+
+            var result = "";
+
+            foreach(var item in discussions)
+            {
+                result += item.Value.ToString();
+                result += ",\n";
+            }
+
+            var data = discussions.Select(ch => {
+                var secondPerson = GetSecondPerson(id, ch.Value);
+
+                return new DiscussionSummaryDto
+                {
+                    UserId = id,
+                    Name = secondPerson.Name,
+                    LastMessage = ch.Value.Content,
+                    LastMessageTimeMarker = GetTimeMarkerForTime(ch.Value.DateTime),
+                    PhotoLink = secondPerson.PhotoLink
+                };
+            });
+
+
+            return Ok(data);
+        }
+
+        private User GetSecondPerson(int id, Message message)
+        {
+            var secondPersonId = message.SenderId == id ? message.ReceiverId : message.SenderId;
+            return _context.ChatUsers.Single(u => u.Id == secondPersonId);
+        }
+
+        private string GetTimeMarkerForTime(DateTime dateTime)
+        {
+            var prevTime = dateTime;
+            var duration = DateTime.Now - prevTime;
+
+            if (duration.TotalDays <= 1)
+                return $"{duration.Hours}h{duration.Minutes}";
+            else return $"{prevTime.Day}-{prevTime.Month}-{prevTime.Year}";
         }
     }
 }

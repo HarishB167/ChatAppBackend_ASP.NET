@@ -218,6 +218,7 @@
     <Compile Include="Controllers\Api\MessagesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Dto\DiscussionSummaryDto.cs" />
     <Compile Include="Dto\MessageDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Global.asax.cs">
