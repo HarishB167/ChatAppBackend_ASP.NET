@@ -83,21 +83,14 @@ namespace ChatAppBackend.Controllers.Api
                 else if (DateTime.Compare(discussions[otherPersonId].DateTime, chat.DateTime) < 0)
                     discussions[otherPersonId] = chat;
             }
-
-            var result = "";
-
-            foreach(var item in discussions)
-            {
-                result += item.Value.ToString();
-                result += ",\n";
-            }
+            
 
             var data = discussions.Select(ch => {
                 var secondPerson = GetSecondPerson(id, ch.Value);
 
                 return new DiscussionSummaryDto
                 {
-                    UserId = id,
+                    UserId = secondPerson.Id,
                     Name = secondPerson.Name,
                     LastMessage = ch.Value.Content,
                     LastMessageTimeMarker = GetTimeMarkerForTime(ch.Value.DateTime),
