@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ChatAppBackend.Dto;
+using ChatAppBackend.Filters;
 using ChatAppBackend.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Web.Http;
 
 namespace ChatAppBackend.Controllers.Api
 {
+    [JwtAuthMiddlewareFilter]
     public class MessagesController : ApiController
     {
         private ApplicationDbContext _context;
